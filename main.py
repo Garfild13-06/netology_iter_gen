@@ -79,24 +79,37 @@ class FlatIterator_3:
         self.list_of_list = list_of_list
         pass
 
+    def flatten(self, list):
+        result = []
+        for item in list:
+            if isinstance(item, list):
+                self.result.extend(self.flatten(item))
+            else:
+                self.result.append(item)
+        return result
+
     def __iter__(self):
         self.result = []
-        self.list_index = 0
-        self.list_in_list_index = 0
+        self.list_index = -1
+
+        self.simple_list = self.flatten(self.list_of_list)
         return self
 
     def __next__(self):
-        if self.list_in_list_index >= len(self.list_of_list[self.list_index]) - 1:
-            self.list_index += 1
-            if type(self.list_of_list[self.list_index][self.list_in_list_index] == 'list'):
-                print("list")
-            if self.list_index >= len(self.list_of_list):
-                raise StopIteration
-            self.list_in_list_index = 0
+        if self.list_index >= len(self.simple_list) - 1:
+            raise StopIteration
         else:
-            self.list_in_list_index += 1
-
-        item = self.list_of_list[self.list_index][self.list_in_list_index]
+            self.list_index += 1
+        item = self.simple_list[self.list_index]
+        # if self.list_in_list_index >= len(self.list_of_list[self.list_index]) - 1:
+        #     self.list_index += 1
+        #     if self.list_index >= len(self.list_of_list):
+        #         raise StopIteration
+        #     self.list_in_list_index = 0
+        # else:
+        #     self.list_in_list_index += 1
+        #
+        # item = self.list_of_list[self.list_index][self.list_in_list_index]
         return item
 
 
